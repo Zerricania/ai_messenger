@@ -14,9 +14,9 @@ void main() async {
 // Проверка доступен ли API, если нет запускаем программу без него.
   try {
     await dotenv.load(fileName: ".env");
-    debugPrint("✓ .env успешно загружен");
+    debugPrint(".env успешно загружен");
   } catch (e) {
-    debugPrint("⚠ .env не найден или ошибка — продолжаем без него (для теста)");
+    debugPrint(".env не найден или ошибка — продолжаем без API (для теста)");
   }
 
   runApp(const ProviderScope(child: MyApp()));

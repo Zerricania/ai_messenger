@@ -24,8 +24,11 @@ dependencies:
   cached_network_image: ^3.4.1
   image_picker: ^1.2.1
   intl: ^0.20.2
+  stream_transform: ^2.1.1
+
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.11.0
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
@@ -35,3 +38,10 @@ flutter:
 
   assets:
     - assets/images/characters/
+    - .env
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"
