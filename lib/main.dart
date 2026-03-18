@@ -1,49 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'core/theme.dart';
-import 'features/auth/auth_screen.dart';
-import 'features/characters/characters_screen.dart';
-import 'features/chat/chat_screen.dart';
+import 'core/router.dart';
+import 'core/services/fcm_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-// Проверка доступен ли API, если нет запускаем программу без него.
   try {
-    await dotenv.load(fileName: ".env");
-    debugPrint(".env успешно загружен");
+    await dotenv.load(fileName: '.env');
   } catch (e) {
-    debugPrint(".env не найден или ошибка — продолжаем без API (для теста)");
+    debugPrint('Файл .env не найден — AI функции недоступны');
   }
+
+  await Firebase.initializeApp();
+
+  // Инициализируем FCM после Firebase
+  await FcmService.initialize();
 
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+    final themeSettings = ref.watch(themeProvider);
+
     return MaterialApp.router(
       title: 'AI Messenger',
-      theme: appTheme,
+      theme: buildTheme(themeSettings),
       debugShowCheckedModeBanner: false,
-      routerConfig: GoRouter(
-        initialLocation: '/auth',
-        routes: [
-          GoRoute(path: '/auth', builder: (_, __) => const AuthScreen()),
-          GoRoute(path: '/characters', builder: (_, __) => const CharactersScreen()),
-          GoRoute(
-            path: '/chat/:characterId',
-            builder: (context, state) => ChatScreen(
-              characterId: state.pathParameters['characterId']!,
-            ),
-          ),
-        ],
-      ),
+      routerConfig: router,
     );
   }
 }

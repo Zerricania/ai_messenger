@@ -7,7 +7,11 @@
 .buildlog/
 .history
 
-
+# Секреты — никогда не коммитить
+.env
+*.env
+google-services.json
+GoogleService-Info.plist
 
 # Flutter repo-specific
 /bin/cache/
