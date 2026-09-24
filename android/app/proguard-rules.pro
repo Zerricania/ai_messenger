@@ -19,3 +19,7 @@
 
 # Не трогать классы с аннотациями Keep
 -keep @androidx.annotation.Keep class * { *; }
+
+# Google Play Core (требуется Flutter, отсутствует в не-Play сборках)
+-dontwarn com.google.android.play.core.**
+-keep class com.google.android.play.core.** { *; }
